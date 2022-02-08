@@ -15,7 +15,7 @@ playlist_striped = playlist_url.rsplit('/', 1)[-1]
 file_ids = playlist_striped.split("-")
 
 
-
+## TODO: Cache This? Is it needed? Need to check expire time of the cookiies to see
 def getLogin():
     """This Returns the cookies for getting patron files
 
@@ -77,18 +77,19 @@ def patreonDL(cookies, file_ids):
                     f.close()
     print("Playlist download done!")
                 
-                
+  
+# TODO: Setup Caching and Download app.json         
 def checkCache():
     """[summary]
     """
     
     lastupdated = config(['lastupdated']['time'])
-
+    
 
 if patron == "True":
     print("yes")
     patreonDL(getLogin(), file_ids)
 else:
-    print("sex")
+    normalDL()
 
 
