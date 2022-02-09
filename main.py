@@ -12,13 +12,12 @@ patron = config['patron']['patron']
 cache_time = config['control']['cacheTime']
 # api/app URL
 api_url = "https://hypno.nimja.com/app"
-# login url
-login_url = "https://hypno.nimja.com/wmyd/"
 
 
 
         
-        
+# TODO: Ask user for cookies and check if expired.
+#def formatCookies(): 
         
 
 #use if not a patreon
@@ -104,7 +103,7 @@ if patron == "True":
 
 
     checkCache()
-    patreonDL(getLogin(), file_ids)
+    patreonDL(formatCookies(), file_ids)
 else:
     checkCache()
     normalDL()
