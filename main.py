@@ -17,25 +17,7 @@ login_url = "https://hypno.nimja.com/wmyd/"
 
 
 
-def getLogin():
-    """This Returns the cookies for getting patron files
-
-    Returns:
-        dict: {'PHPSESSID': 'abc123', 'persist': 'abc123'}
-    """   
-    with requests.Session() as s:
-        email = config['login']['email']
-        passcode = config['login']['passcode']
-        payload = {
-        'email': email,
-        'passcode': passcode
-        }
-        send = s.post("https://hypno.nimja.com/wmyd", data=payload)
-
-        answer = s.post("https://hypno.nimja.com/wmyd")
-        cookies = s.cookies
-        cookies_dict = cookies.get_dict()
-        return cookies_dict
+        
         
         
 
