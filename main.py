@@ -2,20 +2,21 @@ import requests
 import os
 import json
 import configparser
+from os.path import exists
+from datetime import datetime
+#Read the config file
 config = configparser.ConfigParser()
-# Set up the cookies needed to get the files
-# TODO: Find way to have user log in and  grab the cookies there
 config.read('data/settings.ini') 
+# Store a value
 patron = config['patron']['patron']
+cache_time = config['control']['cacheTime']
+# api/app URL
 api_url = "https://hypno.nimja.com/app"
+# login url
 login_url = "https://hypno.nimja.com/wmyd/"
-print(patron)
-playlist_url = input("Please enter the playlist URL: \n")
-playlist_striped = playlist_url.rsplit('/', 1)[-1]
-file_ids = playlist_striped.split("-")
 
 
-## TODO: Cache This? Is it needed? Need to check expire time of the cookiies to see
+
 def getLogin():
     """This Returns the cookies for getting patron files
 
@@ -37,11 +38,11 @@ def getLogin():
         return cookies_dict
         
         
-f = open("data/app.json")
-data = json.load(f)
 
 #use if not a patreon
 def normalDL(file_ids):
+    f = open("data/app.json")
+    data = json.load(f)
     for id in file_ids:
         for i in data['content']['files']:
             if i['id'] == int(id):
@@ -63,6 +64,8 @@ def normalDL(file_ids):
 
 # Use if you are a patron            
 def patreonDL(cookies, file_ids):
+    f = open("data/app.json")
+    data = json.load(f)
     for id in file_ids:
         for i in data['content']['files']:
             if i['id'] == int(id):
@@ -80,16 +83,46 @@ def patreonDL(cookies, file_ids):
   
 # TODO: Setup Caching and Download app.json         
 def checkCache():
-    """[summary]
-    """
-    
-    lastupdated = config(['lastupdated']['time'])
-    
+    """Checks to see if our stored copy is more then
+    """    
+    # Check first if the file exists, if it does, we check when it was downloaded
+    if exists("data/app.json"):
+        f = open("data/app.json")
+        data = json.load(f)
+        now = datetime.now()    
+        nowts = now.timestamp()
+        last_updated = data['time']
+        print(last_updated)
+        difference = float(nowts) - float(last_updated)
+        print("app.json last updated " + str(difference)  + " seconds ago!") 
+        if difference >= float(cache_time):
+            print("Older then " + cache_time + " seconds! Updating!")
+            os.remove("data/app.json")
+            getApp()
+        else:
+            print("Not older then " + cache_time + " seconds, so we won't update!")
+    else:
+        print("We don't have app.json! So we are getting it")
+        getApp()
+
+
+def getApp():
+    r = requests.get(api_url)
+    with open("data/app.json", "w") as f:
+        f.write(r.text)
+        print("Done Updating")
+        f.close()
+        
+playlist_url = input("Please enter the playlist URL: \n")
+playlist_striped = playlist_url.rsplit('/', 1)[-1]
+file_ids = playlist_striped.split("-")
+
 
 if patron == "True":
-    print("yes")
+
+
+    checkCache()
     patreonDL(getLogin(), file_ids)
 else:
+    checkCache()
     normalDL()
-
-
