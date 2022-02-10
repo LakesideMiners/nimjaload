@@ -9,10 +9,11 @@ config = configparser.ConfigParser()
 config.read('data/settings.ini') 
 # Store a value
 patron = config['patron']['patron']
+
+## TODO: Setup an override.
 cache_time = config['control']['cacheTime']
 # api/app URL
 api_url = "https://hypno.nimja.com/app"
-
 
 def checkCache():
     """Checks to see if our stored copy is more then
