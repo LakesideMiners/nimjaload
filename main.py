@@ -46,6 +46,7 @@ def getApp():
         print("Done Updating")
         f.close()
         
+    
         
 # Only runs if user is not a supporter
 def formatCookies(): 
