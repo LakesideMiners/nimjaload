@@ -20,6 +20,11 @@ test_url = "https://hypno.nimja.com/listen/download/nimja-339-loyal_reward.mp3"
 
 
 def check_cache():
+    """
+    Check if cache is too old or if it is too old
+
+    Args:
+    """
     # Check if file exists, if yes, check when it was downloaded
     if exists("data/app.json"):
         f = open("data/app.json")
@@ -44,6 +49,11 @@ def check_cache():
 
 # Gets the app
 def get_app():
+    """
+    Get the app from the API.
+
+    Args:
+    """
     r = requests.get(api_url)
     with open("data/app.json", "w") as f:
         f.write(r.text)
@@ -53,6 +63,11 @@ def get_app():
 
 # Only runs if user is not a supporter
 def format_cookies():
+    """
+    Format cookies.
+
+    Args:
+    """
     persist_input = input("Please enter the persist cookie: \n")
     persist = {'persist': persist_input}
     print(persist)
@@ -70,6 +85,12 @@ def format_cookies():
 # Downloaders
 # use if not a patreon
 def normal_dl(file_ids):
+    """
+    This function takes a list of file ids and returns a JSON file with the normal dl format.
+
+    Args:
+        file_ids: write your description
+    """
     f = open("data/app.json")
     data = json.load(f)
     for ids in file_ids:
@@ -94,6 +115,13 @@ def normal_dl(file_ids):
 
 # Use if you are a patron
 def patreon_dl(cookies, file_ids):
+    """
+    Patreon_dl function that reads a file and returns the contents of the file.
+
+    Args:
+        cookies: write your description
+        file_ids: write your description
+    """
     f = open("data/app.json")
     data = json.load(f)
     for ids in file_ids:
