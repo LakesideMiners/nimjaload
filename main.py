@@ -23,7 +23,7 @@ def check_cache():
     """
     Check if cache is too old or if it is too old
 
-    Args:
+    Args: None
     """
     # Check if file exists, if yes, check when it was downloaded
     if exists("data/app.json"):
@@ -50,9 +50,9 @@ def check_cache():
 # Gets the app
 def get_app():
     """
-    Get the app from the API.
+    Get the app.json from the API.
 
-    Args:
+    Args: None
     """
     r = requests.get(api_url)
     with open("data/app.json", "w") as f:
@@ -61,12 +61,12 @@ def get_app():
         f.close()
 
 
-# Only runs if user is not a supporter
+# Only runs if user is a supporter
 def format_cookies():
     """
-    Format cookies.
+    Returns a dict with the persist cookie`
 
-    Args:
+    Args: None
     """
     persist_input = input("Please enter the persist cookie: \n")
     persist = {'persist': persist_input}
@@ -86,10 +86,10 @@ def format_cookies():
 # use if not a patreon
 def normal_dl(file_ids):
     """
-    This function takes a list of file ids and returns a JSON file with the normal dl format.
+    This function takes a list of file ids and downloads a mp3 file skipping any Patron files for each file
 
     Args:
-        file_ids: write your description
+        file_ids: an array of file IDs as listed by the app.json, NOT by the file number in the name
     """
     f = open("data/app.json")
     data = json.load(f)
@@ -116,11 +116,11 @@ def normal_dl(file_ids):
 # Use if you are a patron
 def patreon_dl(cookies, file_ids):
     """
-    Patreon_dl function that reads a file and returns the contents of the file.
-
+    This function takes a list of file ids and downloads them
+    
     Args:
-        cookies: write your description
-        file_ids: write your description
+        cookies: a dict in the format of
+        file_ids: an array of file IDs as listed by the app.json, NOT by the file number in the name
     """
     f = open("data/app.json")
     data = json.load(f)
