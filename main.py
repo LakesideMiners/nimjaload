@@ -1,7 +1,6 @@
 import os
 import json
 import configparser
-from pydub import AudioSegment as aseg
 from os.path import exists
 from datetime import datetime
 import requests
