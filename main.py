@@ -1,9 +1,12 @@
 import os
 import json
 import configparser
+<<<<<<< HEAD
 from tkinter.ttk import Progressbar
 from urllib import response
 from tqdm import tqdm
+=======
+>>>>>>> a24012bfa95a7812f68b6e364ea5d86533415a8b
 from os.path import exists
 from datetime import datetime
 import requests
