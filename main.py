@@ -1,7 +1,9 @@
 import os
 import json
 import configparser
-from pydub import AudioSegment as aseg
+from tkinter.ttk import Progressbar
+from urllib import response
+from tqdm import tqdm
 from os.path import exists
 from datetime import datetime
 import requests
@@ -21,7 +23,7 @@ test_url = "https://hypno.nimja.com/listen/download/nimja-339-loyal_reward.mp3"
 
 def check_cache():
     """
-    Check if cache is too old or if it is too old
+    Check if cache is too old, if it is, we grab a new one.
 
     Args: None
     """
@@ -55,10 +57,10 @@ def get_app():
     Args: None
     """
     r = requests.get(api_url)
+
+
     with open("data/app.json", "w") as f:
         f.write(r.text)
-        print("Done Updating")
-        f.close()
 
 
 # Only runs if user is a supporter
@@ -101,15 +103,23 @@ def normal_dl(file_ids):
                 name = i["name"] + ".mp3"
                 details = i['links']['details']
                 # Don't need to use cookies
-                r = requests.get(url)
+                r = requests.get(url, stream=True)
+                size = int(response.headers.get('content-length', 0))
                 if r.status_code != requests.codes.ok:
                     print("Skipped" + name + " as it is a Patron file! \n" +
                           "Check url to see when/if it will be made public\n"
                           + details)
                 else:
+                    size = int(r.headers.get('content-length', 0))
+                    block_size = 1024
+                    bar = tqdm(total=size, unit='iB', unit_scale=True)
+
                     with open(name, "wb") as f:
-                        f.write(r.content)
-                        print(name + " Is Done Downloading!")
+                        for dat in r.iter_content(block_size):
+                            bar.update(len(dat))
+
+                            f.write(dat)
+                    bar.close()   
     print("Playlist done downloading!")
 
 
@@ -130,11 +140,17 @@ def patreon_dl(cookies, file_ids):
                 print(i['links']['download'])
                 url = (i['links']['download'])
                 name = i["name"] + ".mp3"
-                r = requests.get(url, cookies=cookies)
+                r = requests.get(url, cookies=cookies, stream=True)
+                size = int(r.headers.get('content-length', 0))
+                block_size = 1024
+                bar = tqdm(total=size, unit='iB', unit_scale=True)
+
                 with open(name, "wb") as f:
-                    f.write(r.content)
-                    print(name + " Is Done Downloading!")
-                    f.close()
+                    for dat in r.iter_content(block_size):
+                        bar.update(len(dat))
+                        f.write(dat)
+                        
+                bar.close()
     print("Playlist download done!")
 
 

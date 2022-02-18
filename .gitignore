@@ -154,3 +154,5 @@ cython_debug/
 
 # Own Stuff
 data/settings.ini
+app.json
+data/app.json
