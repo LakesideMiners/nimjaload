@@ -1,12 +1,9 @@
 import os
 import json
 import configparser
-<<<<<<< HEAD
 from tkinter.ttk import Progressbar
 from urllib import response
 from tqdm import tqdm
-=======
->>>>>>> a24012bfa95a7812f68b6e364ea5d86533415a8b
 from os.path import exists
 from datetime import datetime
 import requests
@@ -27,7 +24,6 @@ test_url = "https://hypno.nimja.com/listen/download/nimja-339-loyal_reward.mp3"
 def check_cache():
     """
     Check if cache is too old, if it is, we grab a new one.
-
     Args: None
     """
     # Check if file exists, if yes, check when it was downloaded
@@ -56,7 +52,6 @@ def check_cache():
 def get_app():
     """
     Get the app.json from the API.
-
     Args: None
     """
     r = requests.get(api_url)
@@ -70,7 +65,6 @@ def get_app():
 def format_cookies():
     """
     Returns a dict with the persist cookie`
-
     Args: None
     """
     persist_input = input("Please enter the persist cookie: \n")
@@ -92,7 +86,6 @@ def format_cookies():
 def normal_dl(file_ids):
     """
     This function takes a list of file ids and downloads a mp3 file skipping any Patron files for each file
-
     Args:
         file_ids: an array of file IDs as listed by the app.json, NOT by the file number in the name
     """
